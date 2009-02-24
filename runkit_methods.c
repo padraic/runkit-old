@@ -341,8 +341,11 @@ static void php_runkit_method_add_or_update(INTERNAL_FUNCTION_PARAMETERS, int ad
 		func.common.fn_flags &= ~ZEND_ACC_PPP_MASK;
 		func.common.fn_flags |= ZEND_ACC_PUBLIC;
 	}
-
-	func.common.fn_flags |= ZEND_ACC_ALLOW_STATIC;
+     if (flags & ZEND_ACC_STATIC) {
+         func.common.fn_flags |= ZEND_ACC_STATIC;
+     } else {
+         func.common.fn_flags |= ZEND_ACC_ALLOW_STATIC;
+     }
 #endif
 
 	zend_hash_apply_with_arguments(EG(class_table), (apply_func_args_t)php_runkit_update_children_methods, 5, ancestor_class, ce, &func, methodname, 
